@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title> slay'ciuotuvas </title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="display">
+                <input id="screen" type="text" placeholder="0" readonly>
+            </div>
+            <div class="btns">
+                <div class="row">
+                    <button id="ce" onclick="backspc()">CE</button>
+                    <button onclick="fact()">x!</button>
+                    <button class="btn">(</button>
+                    <button class="btn">)</button>
+                    <button class="btn">%</button>
+                    <button id="ac" onclick="clearScreen()">AC</button>
+                </div>
+            </div>
+            <div class="btns">
+                <div class="row">
+                    <button onclick="sin()">sin</button>
+                    <button onclick="pi()">π</button>
+                    <button class="btn">7</button>
+                    <button class="btn">8</button>
+                    <button class="btn">9</button>
+                    <button class="btn">/</button>
+                </div>
+            </div>
+            <div class="btns">
+                <div class="row">
+                    <button onclick="cos()">cos</button>
+                    <button onclick="log()">log</button>
+                    <button class="btn">4</button>
+                    <button class="btn">5</button>
+                    <button class="btn">6</button>
+                    <button class="btn">*</button>
+                </div>
+            </div>
+            <div class="btns">
+                <div class="row">
+                    <button onclick="tan()">tan</button>
+                    <button onclick="sqrt()">√</button>
+                    <button class="btn">1</button>
+                    <button class="btn">2</button>
+                    <button class="btn">3</button>
+                    <button class="btn">-</button>
+                </div>
+            </div>
+            <div class="btns">
+                <div class="row">
+                    <button onclick="e()">e</button>
+                    <button onclick="pow()">x²</button>
+                    <button class="btn">0</button>
+                    <button class="btn">.</button>
+                    <button id="eval" onclick="calculate()">=</button>
+                    <button class="btn">+</button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            var screen = document.querySelector('#screen');
+            var btns = document.querySelectorAll('.btn');
+
+            // Event listeners for button clicks
+            for (let item of btns) {
+                item.addEventListener('click', (e) => {
+                    let btnText = e.target.innerText;
+                    if (btnText == 'x') {
+                        btnText = '*';
+                    }
+                    screen.value += btnText;
+                });
+            }
+
+            // Keyboard event listener
+            document.addEventListener('keydown', function (e) {
+                let key = e.key;
+
+                // Allow numbers, operators, backspace, and enter keys
+                if ((key >= '0' && key <= '9') || ['+', '-', '*', '/', '(', ')', '%', '.'].includes(key)) {
+                    screen.value += key;
+                } else if (key === 'Backspace') {
+                    backspc();
+                } else if (key === 'Enter') {
+                    calculate();
+                } else {
+                    // Prevent letters or any non-allowed characters
+                    e.preventDefault();
+                }
+
+                // Prevent default for Enter to avoid form submission
+                if (key === 'Enter') {
+                    e.preventDefault();
+                }
+            });
+
+            // Mathematical operations
+            function sin() {
+                screen.value = Math.sin(screen.value);
+            }
+
+            function cos() {
+                screen.value = Math.cos(screen.value);
+            }
+
+            function tan() {
+                screen.value = Math.tan(screen.value);
+            }
+
+            function pow() {
+                screen.value = Math.pow(screen.value, 2);
+            }
+
+            function sqrt() {
+                screen.value = Math.sqrt(screen.value);
+            }
+
+            function log() {
+                screen.value = Math.log(screen.value);
+            }
+
+            function pi() {
+                screen.value = 3.14159265359;
+            }
+
+            function e() {
+                screen.value = 2.71828182846;
+            }
+
+            function fact() {
+                let num = parseInt(screen.value);
+                if (isNaN(num)) return;
+                let f = 1;
+                for (let i = 1; i <= num; i++) {
+                    f *= i;
+                }
+                screen.value = f;
+            }
+
+            // Function to delete the last character (Backspace functionality)
+            function backspc() {
+                screen.value = screen.value.slice(0, -1);
+            }
+
+            // Function to clear the screen (AC functionality)
+            function clearScreen() {
+                screen.value = '';
+            }
+
+            // Function to evaluate the expression (handle "=" key and Enter)
+            function calculate() {
+                try {
+                    screen.value = eval(screen.value);
+                } catch (error) {
+                    screen.value = 'Error';
+                }
+            }
+        </script>
+    </body>
+</html>
